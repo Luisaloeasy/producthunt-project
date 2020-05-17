@@ -2,8 +2,29 @@
 
 {% block content %}
 
+{% for product in products.all %}
 
-Home!
+<div class="row pb-3"> <!-- Para hacer espacio entre cada publicacion-->
+
+    <div class="col-2" onclick="window.location='{% url 'detail' product.id %}';" style="cursor: pointer;">
+        <img src="{{product.icon.url}}"  class="img-fluid"/>
+    </div>
+         <div class="col-6" onclick="window.location='{% url 'detail' product.id %}';" style="cursor: pointer;">
+             <a href="{{ product.url}}"> <h1> {{product.title}}</h1></a>
+             <p> {{product.summary}}</p>   
+         </div>
+            <div class="col-4" > <!-- Hay que agregar un form para cada producto-->
+                <a href="javascript:{document.getElementById('upvote{{ product.id}}').submit()}"><button class="btn btn-primary btn-lg btn-block"><span class="oi oi-caret-top"></span>  Upvote {{product.votes_total}}</button></a>
+            </div>
+</div>
+<!-- Hay que agregar un form para cada producto con su respesctivo id-->
+<form id="upvote{{ product.id}}" method='POST'action="{% url 'upvote' product.id %}">
+{% csrf_token %}
+<input type="hidden" >
+</form>
+
+
+{% endfor %}
 
 {% endblock content %}
 
